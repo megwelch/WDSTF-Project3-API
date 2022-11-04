@@ -14,8 +14,15 @@ const handle404 = customErrors.handle404
 ///////GET route to INDEX reviews by company//////
 router.get('/reviews/:companyId', (req, res, next) => {
     const companyId = req.params.companyId
+<<<<<<< HEAD
     Review.find({company: companyId}).sort({generalRating: -1})
         .populate("owner")
+=======
+
+    Review.find({company: companyId}).sort({generalRating: -1})
+        .populate("owner")
+
+>>>>>>> 65125a6bde41e3cab42ba31c6234d6310994ae6d
         .then(reviews => {
             res.status(200).json({ reviews: reviews })     
         })
@@ -32,7 +39,7 @@ router.post("/reviews", requireToken, (req,res,next) => {
 router.get('/reviews/show/:id', (req, res, next) => {
 	Review.findById(req.params.id)
         .populate("owner")
-        .populate("comments.author")
+        .populate("comments.owner")
         .populate("company")
 		.then(handle404)
 		.then((review) => res.status(200).json({ review: review}))
@@ -54,6 +61,7 @@ router.patch('/reviews/:revId', requireToken, (req, res, next) => {
     .catch(next)
 
 })
+
 
 router.delete('/reviews/:reviewId', requireToken, (req,res,next) => {
     Review.findById(req.params.reviewId)
