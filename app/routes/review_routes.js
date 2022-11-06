@@ -14,20 +14,8 @@ const handle404 = customErrors.handle404
 ///////GET route to INDEX reviews by company//////
 router.get('/reviews/:companyId', (req, res, next) => {
     const companyId = req.params.companyId
-<<<<<<< HEAD
-<<<<<<< HEAD
-    Review.find({company: companyId}).sort({generalRating: -1})
-        .populate("owner")
-=======
-
-    Review.find({company: companyId}).sort({generalRating: -1})
-        .populate("owner")
-
->>>>>>> 65125a6bde41e3cab42ba31c6234d6310994ae6d
-=======
     Review.find({company: companyId})
         .populate("owner")
->>>>>>> 90882d33ce4e1b853c3ffaf978ee3fc461a18152
         .then(reviews => {
             reviews.sort((a,b) => b.userLikes.length - a.userLikes.length)
             res.status(200).json({ reviews: reviews })     
