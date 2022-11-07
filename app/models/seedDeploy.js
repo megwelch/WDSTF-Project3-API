@@ -79,12 +79,6 @@ const startCompanies = [
         description: 'McKesson Corporation is an American company distributing pharmaceuticals and providing health information technology, medical supplies, and care management tools.'
     },
     {
-        name: 'AmerisourceBergen Corporation',
-        logo: 'https://logo.clearbit.com/amerisourcebergen.com',
-        domain: 'amerisourcebergen.com',
-        description: 'AmerisourceBergen Corporation is an American drug wholesale company that was formed by the merger of Bergen Brunswig and AmeriSource in 2001.'
-    },
-    {
         name: 'Microsoft',
         logo: 'https://logo.clearbit.com/microsoft.com',
         domain: 'microsoft.com',
@@ -455,6 +449,12 @@ db.on('open', async() => {
                                 startingPosition: 'Junior',
                                 startingSalary: 70000,
                                 userLikes: [users[0].id, users[1].id, users[2].id, users[3].id, users[5].id],
+                                comments: [
+                                    {comment: "It's just so great here.  I don't know why you would say something so negative.", owner: users[4].id},
+                                    {comment: "lolololol", owner: users[2].id},
+                                    {comment: "Weird, Jeff.  Totally unprofessional.", owner: users[0].id},
+                                    {comment: "Be happy you get to write any code at all.", owner: users[5].id}
+                                ],
                                 company: companies[0].id,
                                 owner: users[0].id
                             },

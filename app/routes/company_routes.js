@@ -1,11 +1,8 @@
-// Express docs: http://expressjs.com/en/api.html
 const express = require('express')
-// Passport docs: http://www.passportjs.org/docs/
 const passport = require('passport')
 
-
 const Company = require('../models/company')
-
+const Review = require('../models/review')
 
 const customErrors = require('../../lib/custom_errors')
 
@@ -47,10 +44,8 @@ router.post('/companies', requireToken, (req, res, next) => {
 		.then((company) => {
 			res.status(201).json({ company: company })
 		})
-
 		.catch(next)
 })
-
 
 // UPDATE
 // PATCH 
@@ -61,7 +56,6 @@ router.patch('/companies/:id', requireToken, removeBlanks, (req, res, next) => {
 		.then(handle404)
 		.then((company) => {
 			requireOwnership(req, company)
-
 			return company.updateOne(req.body.company)
 		})
 		.then(() => res.sendStatus(204))
@@ -75,6 +69,9 @@ router.delete('/companies/:id', requireToken, (req, res, next) => {
 		.then(handle404)
 		.then((company) => {
 			requireOwnership(req, company)
+		//Also delete reviews of company
+			Review.deleteMany({company: company.id})
+				.catch(next)
 			company.deleteOne()
 		})
 		.then(() => res.sendStatus(204))

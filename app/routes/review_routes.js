@@ -17,6 +17,8 @@ router.get('/reviews/:companyId', (req, res, next) => {
     Review.find({company: companyId})
         .populate("owner")
         .then(reviews => {
+         
+        //Sort returned reviews by number of likes, most to least
             reviews.sort((a,b) => b.userLikes.length - a.userLikes.length)
             res.status(200).json({ reviews: reviews })     
         })
@@ -27,7 +29,7 @@ router.get('/reviews/:companyId', (req, res, next) => {
 router.post("/reviews", requireToken, (req,res,next) => {
     Review.create(req.body.review)
         .then(review => {
-        //update average rating of reviewed company
+        //update average rating of reviewed company with new rating
             Company.findById(review.company)
                 .then(company => {
                     let currentQuantity = company.numberOfReviews
@@ -132,7 +134,11 @@ router.delete('/reviews/:reviewId', requireToken, (req,res,next) => {
                     let currentQuantity = company.numberOfReviews
                     let currentSum = (currentQuantity * company.averageRating) - review.generalRating
                     company.numberOfReviews = currentQuantity - 1
-                    company.averageRating = currentSum / company.numberOfReviews
+                    if (company.numberOfReviews === 0) {
+                        company.averageRating = null
+                    } else {
+                        company.averageRating = currentSum / company.numberOfReviews  
+                    }                    
                     company.save()
                 })
                 .catch(next)
