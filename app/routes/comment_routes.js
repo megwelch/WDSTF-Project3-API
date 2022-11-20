@@ -12,7 +12,6 @@ const handle404 = customErrors.handle404
 const router = express.Router()
 
 
-
 // POST
 router.post("/comments/:reviewId", requireToken, (req,res,next) => {
     const reviewId = req.params.reviewId
